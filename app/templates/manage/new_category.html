@@ -1,0 +1,46 @@
+{% extends 'manage/base.html' %}
+{% import 'manage/_macros.html' as macros %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %} 陈新明博客 - 标签编辑 {% endblock %}
+
+{% block page_content %}
+    <div class='divHeader2' style="padding-left: 38px; background: transparent url('{{ url_for('static', filename='image/common/tag_32.png') }}') no-repeat scroll 3px 9px / 32px auto;">
+    标签编辑
+    </div>
+    <div class="SubMenu"></div>
+    <div id="divMain2" class="edit tag_edit">
+        <form id="edit" name="edit" method="post">
+            {{ form.hidden_tag() }}
+            <p>
+                <span class="title">{{ form.name.label }}</span>
+                <span class="star">(*)</span>
+                <br>
+                {{ form.name(id='edtName', class='edit', size='40', maxlength='50', type='text',required='') }}
+            </p>
+            <p>
+                <span class="title">{{ form.alias.label }}</span>
+                <br>
+                {{ form.alias(id='edtAlias', class='edit', size='40', type='text') }}
+            </p>
+            <p>
+                <span class="title">{{ form.order.label }}</span>
+                <br>
+                {{ form.order(id='edtAlias', class='edit', size='40', type='text') }}
+            </p>
+            {# <p>
+                <span class="title">{{ form.parent.label }}</span>
+                <br>
+                {{ form.parent(id='edtParentID', class='edit', size='1') }}
+            </p> #}
+            <p>
+                <span class="title">{{ form.intro.label }}</span>
+                <br>
+                {{ form.intro(id="edtIntro",cols="3",rows="6",style="width:600px;") }}
+            </p>
+            <p>
+                {{ form.submit(id='btnPost', class='button', onclick='return checkInfo();', type='submit') }}
+            </p>
+        </form>
+    </div>
+{% endblock %}

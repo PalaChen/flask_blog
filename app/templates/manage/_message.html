@@ -1,0 +1,8 @@
+{# 消息栏 #}
+{% for message in get_flashed_messages() %}
+<div class="hint">
+    <p class="hint hint_good">
+        {{ message }}
+    </p>
+</div>
+{% endfor %}

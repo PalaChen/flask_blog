@@ -1,0 +1,51 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
+<div id="comments">
+    <span class="icon" title="comment"></span>
+    <div id="comment" class="commentpost">
+        <h4>
+            Pala 发表评论
+        </h4>
+        <form id="frmSumbit" target="_self" method="post">
+            {{ form.csrf_token }}
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.name.label }}
+                {{ form.name(id='inpName', class='text', value='访客',sieze='28', tabindex='1', type='text') }}
+                <font color="#ff6f3d">必填</font>
+            </p>
+            <p>
+                {{ form.email.label }}
+                {{ form.email(id='inpEmail', class='replytext text',size='28', tabindex='2', type='text') }}
+                选填
+            </p>
+            <p>
+                {{ form.url.label }}
+                {{ form.url(id='inpHomePage',class='replytext text',size='28', tabindex='3', type='text') }}
+                选填
+            </p>
+            <p>
+                {{ form.body(id='txaArticle',class='textarea text',cols='55', rows='4', tabindex='5', placeholder='任何广告行为都会被封杀~') }}
+            </p>
+            <p>
+                {{ form.submit(class='button') }}
+            </p>
+        </form>
+    </div>
+    <h3>已有{{ comment_counts }}位网友发表了看法：</h3>
+    {% for comment in comments %}
+
+    <div id="comments" class="plk">
+            <div class="msgname">
+                <span class="dot"> 楼</span>
+                <a href="{{ comment.homePage }}" target="_blank" rel="nofollow">{{ comment.author }}</a>
+                <span style="color: #aaa;font-size: 13px;">
+                    {{ comment.postTime }}
+                </span>
+            </div>
+            <div class="msgarticle">
+                {{ comment.content }}
+            </div>
+    </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,88 @@
+{% extends 'manage/base.html' %}
+{% import 'manage/_macros.html' as macros %}
+
+
+{% block title %} 陈新明博客 - 文章编辑 {% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
+{% endblock %}
+
+{% block page_content %}
+    <div class='divHeader2' style="padding-left: 38px; background: transparent url('{{ url_for('static', filename='image/common/new_32.png') }}') no-repeat scroll 3px 9px / 32px auto;">
+    文章编辑
+    </div>
+    <div class="SubMenu"></div>
+    <div id="divMain2" class="edit post_edit" style="">
+        <form id="edit" name="edit" method="post" action="" style="">
+            {{ form.csrf_token }}
+            <div id="divEditLeft">
+                <div id="response4" class="editmod2"> </div>
+                <div id="divEditTitle" class="editmod2">
+                    <div id="titleheader" class="editmod">
+                        {{ form.title.label(class="editinputname",for="edtTitle") }}
+                        <div>
+                            {{ form.title(id='edtTitle',maxlength='100',required='')}}
+                        </div>
+                    </div>
+                </div>
+                <div id="response5" class="editmod2"> </div>
+                <div id="divContent" class="editmod2" style="clear: both;">
+                    <div id="cheader" class="editmod editmod3">
+                        {{ form.content.label(class="editinputname",for="editor_content") }}
+                    </div>
+                    <div id="carea" class="editmod editmod3" style="">
+                        {{ form.content(class="ckeditor") }}
+                    </div>
+                </div>
+                <div id="response" class="editmod2"> </div>
+                <div id="alias" class="editmod2">
+                    {{ form.alias.label(class="editinputname",for="edtAlias") }}
+                    {{ form.alias(id='edtAlias', maxlength="250") }}
+                </div>
+                <div id="tags" class="editmod2">
+                    {{ form.tag.label(class="editinputname",for="edtTag") }}
+                    {{ form.tag(id="edtTag") }}
+                    (逗号分割)
+                    <a id="showtags" href="#">显示常用标签</a>
+                </div>
+                <div id="divIntro" class="editmod2" style="">
+                    <div id="theader" class="editmod editmod3">
+                        {{ form.intro.label(class="editinputname",for="editor_intro") }}
+                    </div>
+                    <div id="tarea" class="editmod editmod3" style="">
+                        <div id="editor_intro" class="edui-default" style="">
+                            {{ form.intro(id="edui1",class="edui-editor edui-default",style="width: 973px; z-index: 999;") }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="divEditRight">
+                <div id="divEditPost">
+                    <div id="divBox">
+                        <div id="divFloat" class="">
+                            <div id="post" class="editmod">
+                                {{ form.submit(id="btnPost",class="button",style="width:180px;height:38px;") }}
+                            </div>
+                            <div id="cate" class="editmod">
+                                {{ form.category.label(class="editinputname",for="cmbCateID",style="max-width:65px;text-overflow:ellipsis;") }}
+                                {{ form.category(id="cmbCateID",class="edit",style="width:180px;",size="1") }}
+                            </div>
+                            <div id="type" class="editmod">
+                                {{ form.type.label(class="editinputname",for="cmbPostStatus",style="max-width:65px;text-overflow:ellipsis;") }}
+                                {{ form.type(id="cmbPostStatus",class="edit",style="width:180px;",size="1") }}
+                            </div>
+                            <div id="user" class="editmod">
+                                {{ form.author.label(class="editinputname",for="cmbUser",style="max-width:65px;text-overflow:ellipsis;") }}
+                                {{ form.author(id="cmbUser",style="width:180px;",size="1" ) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+

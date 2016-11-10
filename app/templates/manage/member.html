@@ -1,0 +1,59 @@
+{% extends 'manage/base.html' %}
+{% import 'manage/_macros.html' as macros %}
+
+{% block title %} 陈新明博客 - 用户管理 {% endblock %}
+
+{% block page_content %}
+    <div class='divHeader' style="padding-left: 38px; background: transparent url('{{ url_for('static', filename='image/common/user_32.png') }}') no-repeat scroll 3px 9px / 32px auto;">
+    用户管理
+    </div>
+    <div class="SubMenu" style="display: block;">
+        <a href="{{ url_for('manage.new_member') }}"><span class="m-left">新建用户</span></a>
+        <a href="" target="_blank"><span class="m-left">查看权限</span> </a>
+    </div>
+    <div id="divMain2">
+        <table class="tableFull tableBorder tableBorder-thcenter" border="1">
+            <tbody>
+                <tr class="color1">
+                    <th>ID</th>
+                    <th>用户级别</th>
+                    <th>名称</th>
+                    <th>别名</th>
+                    <th>文章总数</th>
+                    <th>评论总数</th>
+                    <th>附件总数</th>
+                    <th></th>
+                </tr>
+                {% for user in posts %}
+                <tr class="color3">
+                    <td class="td5">{{ user.id }}</td>
+                    <td class="td10">{{ user.role_id }}</td>
+                    <td>
+                        <img src="{{ url_for('static', filename='image/admin/link.png') }}" width="16">
+                        <a href="" class="button" target="_blank">
+                            {{ user.username }}
+                        </a>
+
+                    </td>
+                    <td class="td15">{{ user.alias }}</td>
+                    <td class="td10">{{ user.articles }}</td>
+                    <td class="td10">{{ user.comments }}</td>
+                    <td class="td10">{{ user.uploads }}</td>
+                    <td class="td10 tdCenter">
+                        <a href="{{ url_for('manage.edit_user', id=user.id) }}" class="button">
+                            <img src="{{ url_for('static', filename='image/admin/user_edit.png') }}" alt="编辑" width="16">
+                        </a>
+                        <a href="{{ url_for('manage.delete_user', id=user.id) }}" class="button" onclick="return window.confirm('单击“确定”继续。单击“取消”停止。');">
+                            <img src="{{ url_for('static', filename='image/admin/delete.png') }}" alt="删除" width="10">
+                        </a>
+                    </td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        <p class="pagebar">
+            {{ macros.pagination_widget(pagination, 'manage.member') }}
+        </p>
+    </div>
+{% endblock %}

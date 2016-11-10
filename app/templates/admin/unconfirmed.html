@@ -1,0 +1,25 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %} 账号激活 - 陈新明博客 {% endblock%}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="header">
+            <div class="logo-con w clearfix">
+                <a class="logo" href="/"></a>
+            </div>
+        </div>
+        {% block page_content %}
+            <h1>你好， {{ current_user.username }}</h1>
+            <h3>你的账号还没有激活</h3>
+            <p>你访问此网站之前，您需要确认您的帐户。检查您的收件箱，你应该已经收到一封电子邮件，确认链接。</p>
+            <p>重新发送激活链接?</p>
+            <a href="{{ url_for('admin.resend_confirmation') }}">点击这里</a>
+        {% endblock %}
+    </div>
+{% endblock %}

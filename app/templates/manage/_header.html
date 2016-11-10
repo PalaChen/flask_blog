@@ -1,0 +1,33 @@
+<header class="header">
+    <div class="logo">
+        <a href="{{ url_for('main.index') }}" target="_blank" title="">
+            <img src="{{ url_for('static', filename='image/admin/none.gif') }}" alt="">
+        </a>
+    </div>
+    <div class="user">
+        <a href="{{ url_for('manage.member') }}" title="编辑">
+            <img src="{{ url_for('static', filename='image/system/0.png') }}" alt="Avatar" id="avatar" height="40" width="40">
+        </a>
+        <div class="username">管理员</div>
+        <div class="userbtn">
+            <a class="profile" href="{{ url_for('main.index') }}" title="" target="_blank">返回</a>
+            <a class="logout" href="{{ url_for('admin.logout') }}">注销</a>
+        </div>
+    </div>
+    <div class="menu">
+        <ul id="topmenu">
+            <li id="topmenu_ydefe">
+                <a href="" target="_self" title="主题配置">主题配置</a>
+            </li>
+            <li id="topmenu1" class="on">
+                <a href="{{ url_for('manage.admin') }}" target="_self" title="后台首页">后台首页</a>
+            </li>
+            <li id="topmenu2">
+                <a href="" target="_self" title="网站设置">网站设置</a>
+            </li>
+            <li id="topmenu4">
+                <a href="http://www.chenxm.cc/" target="_self" title="官方网站">官方网站</a>
+            </li>
+        </ul>
+    </div>
+</header>

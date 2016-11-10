@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% import "_macros.html" as macros %}
+
+{% block title %} {{ post.title }} - 陈新明博客 {% endblock %}
+
+{% block page_content %}
+
+{# 消息栏 #}
+{% for message in get_flashed_messages() %}
+<div class="alert alert-warning">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ message }}
+</div>
+{% endfor %}
+
+<article>
+    <h1>
+        <a href="{{ url_for('.post', id=post.id) }}">{{ post.title }}</a>
+    </h1>
+    <div class="article-meta">
+        <span class="article-author">
+            <i class="fa fa-pencil"></i>
+            {{ user.username }}
+        </span>
+        <time>
+            <i class="fa fa-clock-o"></i>
+            {{ post.postTime }}
+        </time>
+        <i class="fa fa-pencil"></i>
+        <a target="_blank"  href="">编辑</a>
+        <p>
+        {{ post.content }}
+        </p>
+    </div>
+</article>
+
+<nav class="article-pagination">
+    <a class="article-prev" href="">前一篇：</a>
+    <p>
+        <a class="article-next" href="">后一篇：</a>
+    </p>
+</nav>
+
+{# 评论框引入 #}
+{% include '_comments.html' %}
+
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.post',id=post.id) }}
+</div>
+{% endif %}
+
+
+{% endblock %}

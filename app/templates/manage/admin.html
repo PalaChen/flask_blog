@@ -1,0 +1,99 @@
+{% extends 'manage/base.html' %}
+
+{% block title %} 陈新明博客 - 后台首页  {% endblock %}
+
+{% block page_content %}
+
+<div class='divHeader' style="padding-left: 38px; background: transparent url('{{ url_for('static', filename='image/system/home_32.png') }}') no-repeat scroll 3px 9px / 32px auto;">
+    网站摘要
+</div>
+<div class='SubMenu'></div>
+<div id='divMain2'>
+    <table class='tableFull tableBorder' id='tbStatistic'>
+        <tr class="color1">
+            <th colspan='4'  scope='col'>
+                &nbsp;网站信息&nbsp;
+                <a href='' id='statistic'>[清空缓存并重新编译模板]</a>
+                <img id='statloading' style='display:none' src='{{ url_for('static', filename='/image/admin/loading.gif') }}' alt=''/>
+            </th>
+        </tr>
+        <tr class="color3">
+            <td class='td20'>当前用户</td>
+            <td class='td30'>
+                <a href=' ' target='_blank'>Pala</a>
+            </td>
+            <td class='td20'>当前版本</td>
+            <td class='td30'>1.4 Deeplue Build 150101</td>
+        </tr>
+        <tr class="color2">
+            <td class='td20'>文章总数</td>
+            <td>{{ posts }}</td>
+            <td>分类总数</td>
+            <td>16</td>
+        </tr>
+        <tr class="color3">
+            <td class='td20'>页面总数</td>
+            <td>1</td>
+            <td>标签总数</td>
+            <td>1</td>
+        </tr>
+        <tr class="color2">
+            <td class='td20'>评论总数</td>
+            <td>{{ comemnts }}</td>
+            <td>浏览总数</td>
+            <td>{{ blog_views.views }}</td>
+        </tr>
+        <tr class="color3">
+            <td class='td20'>当前主题 / 当前样式</td>
+            <td>ydefe/page</td>
+            <td>用户总数</td>
+            <td>{{ users }}</td>
+        </tr>
+        <tr class="color2">
+            <td class='td20'>XML-RPC协议地址</td>
+            <td>http://www.chenxm.cc/zb_system/xml-rpc/</td>
+            <td>系统环境</td>
+            <td><a href=' ' target='_blank'>Linux; Apache; PHP 5.3.29; mysqli; curl</a></td>
+        </tr>
+    </table>
+    <table class='tableFull tableBorder' id='tbUpdateInfo'>
+        <tr class="color1">
+            <th>&nbsp;最新动态信息&nbsp;
+                <a href=''>[刷新]</a>
+                <img id='infoloading' style='display:none' src='{{ url_for('static', filename='/image/admin/loading.gif') }}' />
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <p><a href=''></a></p>
+            </td>
+        </tr>
+    </table>
+</div>
+<table border='0' class='tableFull tableBorder' id='thankslist'>
+    <thead>
+    <tr class="color1">
+        <th height='32' colspan='2'>&nbsp;Z-BlogPHP版网站和程序开发</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr class='color3'>
+            <td class='td15'>程序</td>
+            <td>信息</td>
+        </tr>
+        <tr class='color2'>
+            <td class='td15'>界面</td>
+            <td>信息</td>
+        </tr>
+            <tr class='color3'>
+            <td class='td15'>支持</td>
+            <td>信息</td>
+        </tr>
+        <tr class='color2'>
+            <td class='td15'>感谢</td>
+            <td>信息</td>
+        </tr>
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,4 @@
+{{ user.username }}, 您好：
+    <p>感谢您注册, 请在 24 小时内点击此链接以完成注册</p>
+    <a href="{{ url_for('admin.confirm', token=token, _external=True) }}">{{ url_for('admin.confirm', token=token, _external=True) }}</a>
+    <p>完成激活后，如需设置密码 请点击 激活遇到问题？请联系我们 a1007720052@sina.com</p>

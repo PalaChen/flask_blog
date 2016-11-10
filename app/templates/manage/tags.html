@@ -1,0 +1,51 @@
+{% extends 'manage/base.html' %}
+{% import 'manage/_macros.html' as macros %}
+
+{% block title %} 陈新明博客 - 标签管理 {% endblock %}
+
+{% block page_content %}
+    <div class='divHeader' style="padding-left: 38px; background: transparent url('{{ url_for('static', filename='image/common/tag_32.png') }}') no-repeat scroll 3px 9px / 32px auto;">
+    标签管理
+    </div>
+    <div class="SubMenu" style="display: block;">
+        <a href="{{ url_for('manage.new_tag') }}"><span class="m-left">新建标签</span></a>
+    </div>
+    <div id="divMain2">
+        <table class="tableFull tableBorder tableBorder-thcenter" border="1">
+            <tbody>
+                <tr class="color1">
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>别名</th>
+                    <th>文章数量</th>
+                    <th></th>
+                </tr>
+                {% for tag in posts  %}
+                <tr class="'color3">
+                    <td class="td5">{{ tag.id }}</td>
+                    <td class="td25">
+                        <img src="{{ url_for('static', filename='image/admin/link.png') }}" width="16">
+                        <a href="" class="button" target="_blank">
+                            {{ tag.name }}
+                        </a>
+                    </td>
+                    <td class="td20">{{ tag.alias }}</td>
+                    <td class="td10">{{ tag.count }}</td>
+                    <td class="td10 tdCenter">
+                        <a href="{{ url_for('manage.edit_tag', id=tag.id) }}" class="button">
+                            <img src="{{ url_for('static', filename='image/admin/tag_blue_edit.png') }}" alt="编辑" width="16">
+                        </a>
+                        <a href="{{ url_for('manage.delete_tag', id=tag.id) }}" class="button" onclick="return window.confirm('单击“确定”继续。单击“取消”停止。');">
+                            <img src="{{ url_for('static', filename='image/admin/delete.png') }}" alt="删除" width="10">
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <hr>
+        <p class="pagebar">
+            {{ macros.pagination_widget(pagination, 'manage.tags') }}
+        </p>
+    </div>
+{% endblock %}

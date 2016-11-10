@@ -1,0 +1,54 @@
+{% extends 'manage/base.html' %}
+{% import 'manage/_macros.html' as macros %}
+
+{% block title %} 陈新明博客 - 分类管理 {% endblock %}
+
+{% block page_content %}
+    <div class='divHeader' style="padding-left: 38px; background: transparent url('{{ url_for('static', filename='image/common/category_32.png') }}') no-repeat scroll 3px 9px / 32px auto;">
+    分类管理
+    </div>
+    <div class="SubMenu" style="display: block;">
+        <a href=" {{ url_for('manage.new_category') }}"><span class="m-left">新建分类</span></a>
+    </div>
+    <div id="divMain2">
+        <table class="tableFull tableBorder tableBorder-thcenter" border="1">
+            <tbody>
+                <tr class="color1">
+                    <th>ID</th>
+                    <th>排序</th>
+                    <th>名称</th>
+                    <th>别名</th>
+                    <th>文章数量</th>
+                    <th></th>
+                </tr>
+                {% for category in posts %}
+                <tr class="color3">
+                    <td class="td5">{{ category.id }}</td>
+                    <td class="td5">{{ category.order }}</td>
+                    <td class="td25">
+                        <img src="{{ url_for('static', filename='image/admin/link.png') }}" width="16">
+                        <a href="" class="button" target="_blank">
+                            {{ category.name }}
+                        </a>
+
+                    </td>
+                    <td class="td20">{{ category.alias }}</td>
+                    <td class="td10">{{ category.count }}</td>
+                    <td class="td10 tdCenter">
+                        <a href=" {{ url_for('manage.edit_category', id=category.id) }}" class="button">
+                            <img src="{{ url_for('static', filename='image/admin/tag_blue_edit.png') }}" alt="编辑" width="16">
+                        </a>
+                        <a href="{{ url_for('manage.delete_category', id=category.id) }}" class="button" onclick="return window.confirm('单击“确定”继续。单击“取消”停止。');">
+                            <img src="{{ url_for('static', filename='image/admin/delete.png') }}" alt="删除" width="10">
+                        </a>
+                    </td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        <p class="pagebar">
+            {{ macros.pagination_widget(pagination, 'manage.category') }}
+        </p>
+    </div>
+{% endblock %}

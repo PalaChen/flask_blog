@@ -1,0 +1,80 @@
+{% extends 'manage/base.html' %}
+{% import 'manage/_macros.html' as macros %}
+
+{% block title %} 陈新明博客 - 文章管理 {% endblock %}
+
+{% block page_content %}
+    <div class='divHeader' style="padding-left: 38px; background: transparent url('{{ url_for('static', filename='image/common/article_32.png') }}') no-repeat scroll 3px 9px / 32px auto;">
+    文章管理
+    </div>
+    <div class="SubMenu">
+    </div>
+    <div id="divMain2">
+        <form id="search" class="search" method="post">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.category.label }}
+                {{ form.category(class='edit',size='1',style='width:140px;') }}
+
+                {{ form.type.label }}
+                {{ form.type(class='edit', size='1', style='width:100px;') }}
+                <label>
+                    {{ form.istop(type='checkbox') }}
+                    {{ form.istop.label }}
+                </label>
+                {{ form.title(style='width:250px;', type='text') }}
+                {{ form.submit(class='button', type='submit') }}
+            </p>
+        </form>
+        <table class="tableFull tableBorder tableBorder-thcenter" border="1">
+            <tbody>
+                <tr class="color1">
+                    <th>ID</th>
+                    <th>分类</th>
+                    <th>作者</th>
+                    <th>标题</th>
+                    <th>日期</th>
+                    <th>评论</th>
+                    <th>状态</th>
+                    <th></th>
+                </tr>
+                {% for post in posts %}
+                <tr class="color3">
+                    <td class="td5">{{ post.id }}</td>
+                    <td class="td10">{{ post.categoryID }}</td>
+                    <td class="td10">{{ post.authorID }}</td>
+                    <td>
+                        <img src="{{ url_for('static', filename='image/admin/link.png') }}" width="16">
+                        <a href="{{ url_for('main.post', id=post.id ) }}" class="button" target="_blank">
+                            {{ post.title }}
+                        </a>
+                    </td>
+                    <td class="td20">{{ post.postTime }}</td>
+                    <td class="td5">{{ post.commentNums }}</td>
+                    <td class="td10">
+                        {% if post.type == 0 %}
+                            公开
+                        {% elif post.type == 1 %}
+                            草稿
+                        {% else %}
+                            审核
+                        {% endif %}
+                    </td>
+                    <td class="td10 tdCenter">
+                        <a href="{{ url_for('manage.edit_post', id=post.id) }}" class="button">
+                            <img src="{{ url_for('static', filename='image/admin/user_edit.png') }}" alt="编辑" width="16">
+                        </a>
+                        <a href="{{ url_for('manage.delete_post', id=post.id) }}" class="button" onclick="return window.confirm('单击“确定”继续。单击“取消”停止。');">
+                            <img src="{{ url_for('static', filename='image/admin/delete.png') }}" alt="删除" width="10">
+                        </a>
+                    </td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        <p class="pagebar">
+            {{ macros.pagination_widget(pagination, 'manage.article_manage') }}
+        </p>
+    </div>
+{% endblock %}

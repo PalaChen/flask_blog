@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %} 陈新明博客 - 后台管理 {% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin2.css') }}" >
+{% endblock %}
+
+{% block content %}
+    {# 头部内容 #}
+    {% include 'manage/_header.html' %}
+
+    {# 左边内容 #}
+    {% include 'manage/_aside.html' %}
+
+    {# 右边内容 #}
+    <section class="main" style="">
+        {# 消息栏 #}
+        {% include 'manage/_message.html' %}
+        <div id="divMain" style="">
+            {% block page_content %}{% endblock %}
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block script %}{% endblock %}
