@@ -40,6 +40,8 @@ def post(id):
         if post.commentNums > 0:
             page = (post.commentNums) / \
                    current_app.config['COMENTS_PER_PAGE'] + 1
+        else:
+            page = 1
     pagination = Comment.query.order_by(Comment.postTime.asc()).paginate(
         page, per_page=current_app.config['COMENTS_PER_PAGE'], error_out=False)
     comments = pagination.items

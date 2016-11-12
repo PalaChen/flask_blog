@@ -20,7 +20,9 @@ class Role(db.Model):
     name = db.Column(db.String)
     default = db.Column(db.BOOLEAN, default=False)
     permissions = db.Column(db.String)
-    # users = db.relationship('User', backref='role', lazy='dynamic')
+    users = db.relationship('User', backref='role', lazy='dynamic')
+
+
 
     @staticmethod
     def insert_roles():
@@ -56,11 +58,13 @@ class User(db.Model, UserMixin):
     # 发布评论数量
     comments = db.Column(db.Integer, default=0)
     uploads = db.Column(db.Integer, default=0)
-    homepage = db.Column(db.String)
-    intro = db.Column(db.Integer)
-    alias = db.Column(db.String)
-    role_id = db.Column(db.Integer)
-
+    homepage = db.Column(db.String, default='')
+    intro = db.Column(db.Integer,default='')
+    alias = db.Column(db.String, default='')
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    # role = db.relationship('Role', foreign_keys="User.role_id")
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    # uploads = db.relationship('Upload', backref='author', lazy='dynamic')
    # 密码加密和解密
     @property
     def password(self):
@@ -115,11 +119,12 @@ class User(db.Model, UserMixin):
 
 
 
-    # 生成默认角色
+    # # 生成默认角色
     # def __init__(self, **kwargs):
     #     super(User, self).__init__(**kwargs)
     #     if self.role is None:
     #         self.role = Role.query.filter_by(default=True).first()
+
 
 
 # 文章表
@@ -136,7 +141,7 @@ class Post(db.Model):
     # 为日志是否置顶，0为不置顶，1为置顶。
     isTop = db.Column(db.Integer, default=0)
     # 作者id
-    authorID = db.Column(db.Integer)
+    authorID = db.Column(db.Integer, db.ForeignKey('users.id'))
     # 文章发布ip地址
     IP = db.Column(db.String)
     # 文章发布时间
@@ -146,9 +151,9 @@ class Post(db.Model):
     # 阅读数
     views = db.Column(db.Integer)
     # 文章标签
-    tagID = db.Column(db.String)
+    tagID = db.Column(db.String, db.ForeignKey('tags.id'))
     # 分类
-    categoryID = db.Column(db.Integer)
+    categoryID = db.Column(db.Integer, db.ForeignKey('categorys.id'))
 
     @staticmethod
     def generate_fake(count):
@@ -187,7 +192,7 @@ class Post(db.Model):
         db.session.commit
 # 评论表
 class Comment(db.Model):
-    __tablename__ = 'comment'
+    __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     # 评论人姓名
     author = db.Column(db.String)
@@ -201,7 +206,8 @@ class Comment(db.Model):
     # 评论人电脑数据、浏览器信息等
     agent = db.Column(db.String)
     # 文章ID
-    postID = db.Column(db.Integer)
+    postID = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    # posts = db.relationship('Post', backref='com_author', lazy='dynamic')
 
     @staticmethod
     def on_change_body(target, value, oldvalue, initiator):
@@ -214,7 +220,7 @@ db.event.listen(Comment.content, 'set', Comment.on_change_body)
 
 # 分类表
 class Category(db.Model):
-    __tablename__ = 'category'
+    __tablename__ = 'categorys'
     id = db.Column(db.Integer, primary_key=True)
     # 分类名字
     name = db.Column(db.String)
@@ -223,10 +229,12 @@ class Category(db.Model):
     # 该分类下所有日志数量
     count = db.Column(db.Integer, default=0)
     # 分类别名
-    alias = db.Column(db.String)
-    intro = db.Column(db.String)
+    alias = db.Column(db.String, default='')
+    intro = db.Column(db.String, default='')
     rootID = db.Column(db.Integer)
     parentID = db.Column(db.Integer)
+    # 分类id反向关联
+    articles = db.relationship('Post', backref='category', lazy='dynamic')
 
     @staticmethod
     def generate_fake():
@@ -249,7 +257,7 @@ class Upload(db.Model):
     __tablename__ = 'upload'
     id = db.Column(db.Integer, primary_key=True)
     # 上传文件的用户id
-    AuthorID = db.Column(db.Integer)
+    AuthorID = db.Column(db.Integer, db.ForeignKey('users.id'))
     # 文件大小
     size = db.Column(db.Integer)
     # 文件默认名字
@@ -303,10 +311,11 @@ class Tags(db.Model):
     name = db.Column(db.String)
     order = db.Column(db.Integer)
     count = db.Column(db.Integer, default=0)
-    alias = db.Column(db.String)
+    alias = db.Column(db.String,default='')
     intro = db.Column(db.String)
     templater = db.Column(db.String)
     meta = db.Column(db.String)
+
 
 
     @staticmethod

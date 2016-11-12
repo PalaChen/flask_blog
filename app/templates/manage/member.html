@@ -27,7 +27,7 @@
                 {% for user in posts %}
                 <tr class="color3">
                     <td class="td5">{{ user.id }}</td>
-                    <td class="td10">{{ user.role_id }}</td>
+                    <td class="td10">{{ user.role.name }}</td>
                     <td>
                         <img src="{{ url_for('static', filename='image/admin/link.png') }}" width="16">
                         <a href="" class="button" target="_blank">

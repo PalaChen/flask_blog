@@ -30,7 +30,7 @@ def base():
                 username='pala',
                 password='qweasd123',
                 confirmed=True,
-                role_id='1')
+                role_id='1',)
     db.session.add(user)
     db.session.commit()
 

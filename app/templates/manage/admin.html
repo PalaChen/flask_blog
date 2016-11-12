@@ -1,6 +1,6 @@
 {% extends 'manage/base.html' %}
 
-{% block title %} 陈新明博客 - 后台首页  {% endblock %}
+{% block title %} 陈新明博客 - 后台首页 {% endblock %}
 
 {% block page_content %}
 
@@ -29,13 +29,13 @@
             <td class='td20'>文章总数</td>
             <td>{{ posts }}</td>
             <td>分类总数</td>
-            <td>16</td>
+            <td>{{ categorys }}</td>
         </tr>
         <tr class="color3">
             <td class='td20'>页面总数</td>
             <td>1</td>
             <td>标签总数</td>
-            <td>1</td>
+            <td>{{ tags }}</td>
         </tr>
         <tr class="color2">
             <td class='td20'>评论总数</td>

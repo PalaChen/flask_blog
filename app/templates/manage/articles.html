@@ -1,7 +1,7 @@
 {% extends 'manage/base.html' %}
 {% import 'manage/_macros.html' as macros %}
 
-{% block title %} 陈新明博客 - 文章管理 {% endblock %}
+{% block title %}陈新明博客 - 文章管理{% endblock%}
 
 {% block page_content %}
     <div class='divHeader' style="padding-left: 38px; background: transparent url('{{ url_for('static', filename='image/common/article_32.png') }}') no-repeat scroll 3px 9px / 32px auto;">
@@ -41,8 +41,8 @@
                 {% for post in posts %}
                 <tr class="color3">
                     <td class="td5">{{ post.id }}</td>
-                    <td class="td10">{{ post.categoryID }}</td>
-                    <td class="td10">{{ post.authorID }}</td>
+                    <td class="td10">{{ post.category.name }}</td>
+                    <td class="td10">{{ post.author.username }}</td>
                     <td>
                         <img src="{{ url_for('static', filename='image/admin/link.png') }}" width="16">
                         <a href="{{ url_for('main.post', id=post.id ) }}" class="button" target="_blank">

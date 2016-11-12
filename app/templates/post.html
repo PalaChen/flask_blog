@@ -19,15 +19,15 @@
     </h1>
     <div class="article-meta">
         <span class="article-author">
-            <i class="fa fa-pencil"></i>
-            {{ user.username }}
+            {{ post.author.username }}
         </span>
         <time>
-            <i class="fa fa-clock-o"></i>
             {{ post.postTime }}
         </time>
-        <i class="fa fa-pencil"></i>
-        <a target="_blank"  href="">编辑</a>
+        <span class="article-tags">
+            <a target="_blank" href="">{{ post.category.name }}</a>
+        </span>
+        <a target="_blank"  href="">&nbsp;&nbsp;编辑</a>
         <p>
         {{ post.content }}
         </p>

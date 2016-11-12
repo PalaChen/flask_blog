@@ -10,10 +10,12 @@ from .forms import NewPostForm, TagForm, NewCategoryForm, NewMemberForm, SearchF
 def admin():
     users = User.query.count()
     posts = Post.query.count()
+    categorys = Category.query.count()
     comemnts = Comment.query.count()
+    tags = Tags.query.count()
     blog_views = BlogInfo.query.filter_by(id='1').first()
     return render_template('manage/admin.html', users=users, posts=posts, comemnts=comemnts,
-                    blog_views=blog_views)
+                    categorys=categorys, tags=tags, blog_views=blog_views)
 
 # 发布新文章
 @manage.route('/admin/new_post', methods=['GET','POST'])
@@ -289,7 +291,7 @@ def edit_user(id):
                 if user:
                     flash('存在相同邮箱，请修改邮箱')
                     return redirect(url_for('manage.new_member'))
-                
+
             role_id = form.role.data
             role = Role.query.get(role_id)
             if role:
@@ -325,8 +327,9 @@ def delete_user(id):
 @login_required
 def article_manage():
     form = SearchForm()
-    form.category.choices = [(c.id, c.name) for c in Category.query.all()]
-
+    categorys = [(c.id, c.name) for c in Category.query.all()]
+    categorys.insert(0,(-1, u'任意'))
+    form.category.choices = categorys
     type = [(-1, '任意'), (0, '公开'), (1, '草稿'), (2, '审核')]
     form.type.choices = type
 
