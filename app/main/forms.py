@@ -1,15 +1,14 @@
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField
 from wtforms.validators import Email
 from wtforms.validators import DataRequired
 from flask_pagedown.fields import PageDownField
 
-class PostForm(Form):
-    title = StringField('标题', validators=[DataRequired()])
-    body = PageDownField(validators=[DataRequired()])
-    submit = SubmitField('提交')
+class SearchForm(FlaskForm):
+    body = StringField(validators=[DataRequired()])
+    submit = SubmitField('搜索')
 
-class CommentForm(Form):
+class CommentForm(FlaskForm):
     name = StringField('名称', validators=[DataRequired()])
     email = StringField('邮箱')
     url = StringField('网址')

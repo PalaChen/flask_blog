@@ -32,15 +32,15 @@
             </p>
         </form>
     </div>
-    <h3>已有{{ comment_counts }}位网友发表了看法：</h3>
-    {% for comment in comments %}
+    <h3>已有{{ post.commentNums }}位网友发表了看法：</h3>
 
+    {% for comment in comments %}
     <div id="comments" class="plk">
             <div class="msgname">
-                <span class="dot"> 楼</span>
+                <span class="dot"> {{loop.index}}楼</span>
                 <a href="{{ comment.homePage }}" target="_blank" rel="nofollow">{{ comment.author }}</a>
                 <span style="color: #aaa;font-size: 13px;">
-                    {{ comment.postTime }}
+                    {{ moment(comment.postTime).format('YYYY-MM-DD, H:mm:ss') }}
                 </span>
             </div>
             <div class="msgarticle">

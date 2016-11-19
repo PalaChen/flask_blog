@@ -3,6 +3,7 @@
 {% block title %}陈新明博客{% endblock%}
 
 {% block head %}
+    {{ super() }}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin2.css') }}" >
 {% endblock %}
 

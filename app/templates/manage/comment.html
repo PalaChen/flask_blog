@@ -1,0 +1,78 @@
+{% extends 'manage/base.html' %}
+{% import 'manage/_macros.html' as macros %}
+
+{% block title %} 陈新明博客 - 评论管理 {% endblock %}
+
+{% block page_content %}
+    <div class='divHeader' style="padding-left: 38px; background: transparent url('{{ url_for('static', filename='image/common/comments_32.png') }}') no-repeat scroll 3px 9px / 32px auto;">
+    评论管理
+    </div>
+    <div class="SubMenu" style="display: block;">
+        <a href=" {{ url_for('manage.new_category') }}"><span class="m-left">审核评论</span></a>
+    </div>
+    <div id="divMain2">
+        <form id="search" class="search" method="post" action="#">
+            <p>
+                {{ form.search.label }}
+                {{ form.search(style='width:450px;') }}
+                {{ form.submit(class="button") }}
+            </p>
+        </form>
+        <form method="post">
+            <table class="tableFull tableBorder tableBorder-thcenter" border="1">
+                <tbody>
+                    <tr class="color1">
+                        <th>ID</th>
+                        <th>上层ID</th>
+                        <th>名称</th>
+                        <th>正文</th>
+                        <th>文章</th>
+                        <th>日期</th>
+                        <th></th>
+                        <th>
+                        <a href="" onclick="BatchSelectAll();return false;">全选</a>
+                        </th>
+                    </tr>
+                    {% for post in posts %}
+                    <tr class="color3">
+                        <td class="td5">{{ post.id }}</td>
+                        <td class="td5"></td>
+                        <td class="td10">{{ post.author }}</td>
+                        <td>
+                            <div style="overflow:hidden;max-width:500px;">
+                                <a class="button" href="{{ url_for('main.post', id=post.postID) }}" target="_blank">
+                                    {{ post.content }}
+                                </a>
+                            </div>
+                        </td>
+                        <td class="td5">{{ post.postID }}</td>
+                        <td class="td15">{{ moment(post.postTime).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                        <td class="td10 tdCenter">
+                            <a href="}" class="button">
+                                <img src="{{ url_for('static', filename='image/admin/delete.png') }}" alt="删除" width="16">
+                            </a>
+                            <a href="" class="button" onclick="return window.confirm('单击“确定”继续。单击“取消”停止。');">
+                                <img src="{{ url_for('static', filename='image/admin/minus-shield.png') }}" alt="审核" width="10">
+                            </a>
+                        </td>
+                        <td class="td5 tdCenter">
+                            {{ form1.select(id="id1") }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p style="float:right;">
+                {{ form1.submit() }}
+            </p>
+            <p class="pagebar">
+                 {{ macros.pagination_widget(pagination, 'manage.category') }}
+            </p>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+{% endblock %}

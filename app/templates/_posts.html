@@ -1,28 +1,16 @@
 
         {% for post in posts %}
+
             <article class="article-index">
                 <h2><a href="{{ url_for('.post', id=post.id) }}">{{ post.title }}</a> </h2>
                 <div class="article-meta">
-                    <span class="article-author">
-                        <a href="/" target="_blank" title="">{{ post.author.username }}</a>
-                    </span>
-                    <time itemscope="dataPublished">
-                            {{ post.postTime }}
-                    </time>
-                    <span class="article-tags">
-                        <a target="_blank" href="">{{ post.category.name }}</a>
-                    </span>
-
-                    <a target="_blank"  href="">&nbsp;&nbsp;编辑</a>
-
-                        &nbsp;&nbsp;评论数：{{ post.commentNums }}
-                        &nbsp;&nbsp;浏览数：{{ post.views }}
+                    {% include '_post_info.html' %}
                 </div>
-
                 <section>
-                    {{ post.intro }}
-                    <p><a class="article-readmore" href="{{ url_for('.post', id=post.id) }}">阅读全部</a></p>
+                    {{ post.intro | safe }}
                 </section>
+                <p><a class="article-readmore" href="{{ url_for('.post', id=post.id) }}">阅读全部</a></p>
             </article>
+
         {% endfor  %}
 

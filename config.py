@@ -12,7 +12,7 @@ class Config(object):
     MAIL_USERNAME = 'a1007720052@sina.com'
     MAIL_PASSWORD = 'sina.com.cn'
     MAIL_SENDER = '博客管理员 <a1007720052@sina.com>'
-
+    FLASKY_ADMIN = 'koio@163.com'
     # 文章列表页面每页显示文章数量
     POSTS_PER_PAGE = 10
     # 评论列表每页显示评论数量
@@ -25,7 +25,8 @@ class Config(object):
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+    # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@localhost/flask_web'
 
 # 用于测试配置
 class TestingConfig(Config):

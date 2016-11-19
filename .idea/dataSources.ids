@@ -15,7 +15,7 @@
       <column name="views" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <primary-key columns="id"/>
     </table>
-    <table name="category" schema="" catalog="" type="TABLE">
+    <table name="categorys" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="name" sqlType="VARCHAR" precision="0" scale="-1" nullable="true" jdbcType="12"/>
       <column name="order" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
@@ -26,18 +26,19 @@
       <column name="parentID" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <primary-key columns="id"/>
     </table>
-    <table name="comment" schema="" catalog="" type="TABLE">
+    <table name="comments" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
-      <column name="Author" sqlType="VARCHAR" precision="0" scale="-1" nullable="true" jdbcType="12"/>
-      <column name="Content" sqlType="TEXT" precision="0" scale="-1" nullable="true" jdbcType="12"/>
-      <column name="Content_html" sqlType="TEXT" precision="0" scale="-1" nullable="true" jdbcType="12"/>
-      <column name="Email" sqlType="VARCHAR" precision="0" scale="-1" nullable="true" jdbcType="12"/>
-      <column name="HomePage" sqlType="VARCHAR" precision="0" scale="-1" nullable="true" jdbcType="12"/>
-      <column name="PostTime" sqlType="DATETIME" precision="0" scale="-1" nullable="true" jdbcType="12"/>
-      <column name="IP" sqlType="VARCHAR" precision="0" scale="-1" nullable="true" jdbcType="12"/>
-      <column name="Agent" sqlType="VARCHAR" precision="0" scale="-1" nullable="true" jdbcType="12"/>
-      <column name="PostID" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
-      <primary-key columns="id"/>
+      <column name="author" sqlType="VARCHAR" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="content" sqlType="TEXT" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="content_html" sqlType="TEXT" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="homePage" sqlType="VARCHAR" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="postTime" sqlType="DATETIME" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="ip" sqlType="VARCHAR" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="agent" sqlType="VARCHAR" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="postID" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <primary-key columns="id),foreign key(&quot;postid&quot;"/>
+      <foreign-key name="#FAKE_comments_1" columns="postID" ref-table="posts" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
     </table>
     <table name="posts" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
@@ -54,7 +55,10 @@
       <column name="views" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <column name="tagID" sqlType="VARCHAR" precision="0" scale="-1" nullable="true" jdbcType="12"/>
       <column name="categoryID" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
-      <primary-key columns="id"/>
+      <primary-key columns="id),foreign key(&quot;authorid&quot;"/>
+      <foreign-key name="#FAKE_posts_1" columns="categoryID" ref-table="categorys" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_posts_2" columns="tagID" ref-table="tags" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_posts_3" columns="authorID" ref-table="users" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
     </table>
     <table name="roles" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
@@ -82,7 +86,8 @@
       <column name="SourceName" sqlType="VARCHAR" precision="0" scale="-1" nullable="true" jdbcType="12"/>
       <column name="MimeType" sqlType="VARCHAR" precision="0" scale="-1" nullable="true" jdbcType="12"/>
       <column name="PostTime" sqlType="DATETIME" precision="0" scale="-1" nullable="true" jdbcType="12"/>
-      <primary-key columns="id"/>
+      <primary-key columns="id),foreign key(&quot;authorid&quot;"/>
+      <foreign-key name="#FAKE_upload_1" columns="AuthorID" ref-table="users" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
     </table>
     <table name="users" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
@@ -102,6 +107,7 @@
       <column name="alias" sqlType="VARCHAR" precision="0" scale="-1" nullable="true" jdbcType="12"/>
       <column name="role_id" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <primary-key columns="id),unique (username"/>
+      <foreign-key name="#FAKE_users_1" columns="role_id" ref-table="roles" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
     </table>
   </data-source>
 </component>

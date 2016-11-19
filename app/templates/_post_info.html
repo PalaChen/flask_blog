@@ -1,0 +1,20 @@
+    {% if post.authorID %}
+    <span class="article-author">
+        <a href="/" target="_blank" title="">{{ post.author.username }}</a>
+    </span>
+    {% endif %}
+
+    <time itemscope="dataPublished">
+        {{ moment(post.postTime).format('L') }}
+    </time>
+    {% if post.categoryID %}
+    <span class="article-tags">
+        分类：<a target="_blank" href="{{ url_for('main.category', id=post.category.id) }}">{{ post.category.name }}</a>
+    </span>
+    {% endif %}
+    &nbsp;&nbsp;
+        {% if current_user.is_administrator() %}
+            <a target="_blank"  href="{{ url_for('manage.edit_post', id=post.id) }}">编辑</a>
+        {% endif %}
+        &nbsp;&nbsp;评论数：{{ post.commentNums }}
+        &nbsp;&nbsp;浏览数：{{ post.views }}

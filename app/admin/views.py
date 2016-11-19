@@ -1,3 +1,5 @@
+# encoding:utf-8
+
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required, login_user, current_user, logout_user
 from sqlalchemy import or_
@@ -36,14 +38,16 @@ def resend_confirmation():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter(or_(User.username == form.name.data, User.email == form.name.data)).first()
+        user = User.query.filter(or_(User.username == form.name.data,
+                                     User.email == form.name.data)).first()
 
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
+            flash(u'登陆成功，欢迎你回来')
             return redirect(request.args.get('next') or url_for('main.index'))
         flash(u'账号密码无效')
     if form.errors:
-        flash('登陆失败，请尝试重新登陆.')
+        flash(u'登陆失败，请尝试重新登陆.')
 
     return render_template('admin/login.html', form=form)
 
@@ -114,8 +118,7 @@ def register():
     if form.validate_on_submit():
         user = User(email=form.email.data,
                     username=form.username.data,
-                    password=form.password.data,
-                    role_id=3 ,)
+                    password=form.password.data)
         db.session.add(user)
         db.session.commit()
         token = user.generate_confirmation_token()

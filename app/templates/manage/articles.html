@@ -49,9 +49,11 @@
                             {{ post.title }}
                         </a>
                     </td>
-                    <td class="td20">{{ post.postTime }}</td>
+                    <td class="td20">
+                        {{ moment(post.postTime).format('YYYY-MM-DD  HH:mm:ss') }}
+                    </td>
                     <td class="td5">{{ post.commentNums }}</td>
-                    <td class="td10">
+                    <td class="td5">
                         {% if post.type == 0 %}
                             公开
                         {% elif post.type == 1 %}
@@ -77,4 +79,9 @@
             {{ macros.pagination_widget(pagination, 'manage.article_manage') }}
         </p>
     </div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
 {% endblock %}

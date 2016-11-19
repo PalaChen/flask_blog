@@ -40,60 +40,7 @@
 {% block content %}
 <body>
     {# 左边侧边栏 #}
-    <aside>
-        <a class="home" href="/" title="python">
-            <img src="{{ url_for('static', filename='logo.png') }}">
-            <br>
-            <abbr title="'EFE">Python</abbr>
-        </a>
-        <div class="sidebarleft">
-            <h4>最近发表</h4>
-            <ul class="product-overview-side">
-                <li></l><a href="/">主页</a></li>
-                <li></l><a href="/">主页</a></li>
-                <li></l><a href="/">主页</a></li>
-            </ul>
-        </div>
-        <div class="sidebarleft">
-            <h4>网站分类</h4>
-            <ul class="product-overview-side">
-                <li></l><a href="/">主页</a></li>
-                <li></l><a href="/">主页</a></li>
-                <li></l><a href="/">主页</a></li>
-            </ul>
-        </div>
-            <div class="sidebarleft">
-            <h4>控制面板</h4>
-            <div class="product-overview-side efe-desc widget_divContorPanel_inner">
-                <div class="sidebg">
-                    <span class="cp-hello">
-                        您好,欢迎到访网站!
-                    </span>
-                    <br>
-                    {% if current_user.is_authenticated %}
-                        <span><a href="{{ url_for('manage.admin') }}">后台管理</a></span>
-                        <span><a href="{{ url_for('admin.logout') }}">注销</a> </span>
-                        <br>
-                        <span><a href="{{ url_for("admin.change_password") }}">更改密码</a> </span>
-                    {% else %}
-                        <span class="cp-login"><a href="{{ url_for('admin.login') }}">登陆后台</a></span>
-                        <span class="cp-register"><a href="{{ url_for('admin.register') }}">注册</a></span>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        <div class="sidebarleft">
-            <h4>搜索</h4>
-            <div class="product-overview-side efe-desc widget_divCalendar_inner">
-                <div class="sidebg">
-                    <form name="serach" method="post" action="/">
-                        <input name="q" size="11" type="text">
-                        <input value='搜索' type='submit'>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </aside>
+    {% include '_aside.html' %}
     {% block page_content %}{% endblock %}
 
 

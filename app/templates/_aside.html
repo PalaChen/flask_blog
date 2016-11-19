@@ -1,0 +1,70 @@
+    <aside>
+        <a class="home" href="/" title="python">
+            <img src="{{ url_for('static', filename='logo.png') }}">
+            <br>
+            <abbr title="'EFE">Python</abbr>
+        </a>
+        <div class="sidebarleft">
+            <h4>最近发表</h4>
+            <ul class="product-overview-side">
+                {% for n_post in Post.query.order_by(Post.postTime.desc()).limit(10) %}
+                    <li><a href="">{{ n_post.title }}</a> </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="sidebarleft">
+            <h4>网站分类</h4>
+            <ul class="product-overview-side">
+                {% for category in Category.query.all() %}
+                    <li><a href="{{ url_for('main.category', id=category.id) }}">{{ category.name }}({{ category.count }})</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="sidebarleft">
+            <h4>标签列表</h4>
+            <ul class="product-overview-side">
+                {% for tag in Tag.query.all() %}
+                    {% if tag.count !=0 %}
+                        <li><a href="{{ url_for('main.tag', id=tag.id) }}">{{ tag.name }}({{ tag.count }})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="sidebarleft">
+            <h4>控制面板</h4>
+            <div class="product-overview-side efe-desc widget_divContorPanel_inner">
+                <div class="sidebg">
+                    <span class="cp-hello">
+                        您好,欢迎到访网站!
+                    </span>
+                    <br>
+                    {% if current_user.is_administrator() %}
+                        <span><a href="{{ url_for('manage.admin') }}">后台管理</a></span>
+                        <span><a href="{{ url_for('admin.logout') }}">注销</a> </span>
+                        <span><a href="{{ url_for("admin.change_password") }}">更改密码</a> </span>
+                    {% elif current_user.is_authenticated %}
+                        <span><a href="{{ url_for('admin.logout') }}">注销</a> </span>
+                        <span><a href="{{ url_for("admin.change_password") }}">更改密码</a> </span>
+                    {% else %}
+                        <span class="cp-login"><a href="{{ url_for('admin.login') }}">登陆后台</a></span>
+                        <span class="cp-register"><a href="{{ url_for('admin.register') }}">注册</a></span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebarleft">
+            <h4>搜索</h4>
+            <div class="product-overview-side efe-desc widget_divCalendar_inner">
+                <div class="sidebg">
+                    <form name="serach" method="post" action="/">
+                        {{ form.csrf_token }}
+                        {{ form.hidden_tag() }}
+
+                        {{ form.body() }}
+                        {{ form.submit(type='submit') }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </aside>

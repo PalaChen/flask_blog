@@ -18,27 +18,24 @@
         <a href="{{ url_for('.post', id=post.id) }}">{{ post.title }}</a>
     </h1>
     <div class="article-meta">
-        <span class="article-author">
-            {{ post.author.username }}
-        </span>
-        <time>
-            {{ post.postTime }}
-        </time>
-        <span class="article-tags">
-            <a target="_blank" href="">{{ post.category.name }}</a>
-        </span>
-        <a target="_blank"  href="">&nbsp;&nbsp;编辑</a>
+        {% include '_post_info.html' %}
         <p>
-        {{ post.content }}
+        {{ post.content | safe }}
         </p>
     </div>
 </article>
 
 <nav class="article-pagination">
-    <a class="article-prev" href="">前一篇：</a>
-    <p>
-        <a class="article-next" href="">后一篇：</a>
-    </p>
+
+    <font class="article-prev">前一篇：</font>
+        {% if prev %}
+            <a  href="{{ url_for('main.post', id=prev.id) }}">{{ prev.title }}</a>
+        {% endif %}
+    <br>
+    <font class="article-prev">后一篇：</font>
+        {% if next %}
+            <a class="article-next" href="{{ url_for('main.post', id=next.id) }}">{{ next.title }}</a>
+        {% endif %}
 </nav>
 
 {# 评论框引入 #}
@@ -52,3 +49,4 @@
 
 
 {% endblock %}
+

@@ -1,13 +1,14 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, SelectField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, EqualTo, Email, URL, Length
-
+from wtforms.validators import ValidationError
+from app.models import User
 
 class NewPostForm(FlaskForm):
     title = StringField('标题', validators=[DataRequired()])
-    content = TextAreaField('正文', validators=[DataRequired()])
-    alias = StringField('别名', validators=[DataRequired()])
-    intro = TextAreaField('摘要', validators=[DataRequired()])
+    content = TextAreaField('正文')
+    alias = StringField('别名')
+    intro = TextAreaField('摘要')
     tag = StringField('标签')
     category = SelectField('分类', coerce=int)
     type = SelectField('状态', coerce=int)
@@ -40,6 +41,15 @@ class NewMemberForm(FlaskForm):
     intro = TextAreaField('摘要')
     submit = SubmitField('提交')
 
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError('邮箱已存在')
+
+    def validate_username(self, field):
+        if User.query.filter_by(username=field.data).first():
+            raise ValidationError('用户名已存在')
+
+
 class SearchForm(FlaskForm):
     category = SelectField('搜索：分类')
     type = SelectField('  类型')
@@ -47,3 +57,10 @@ class SearchForm(FlaskForm):
     title = StringField()
     submit = SubmitField('提交')
 
+class SearchComentFrom(FlaskForm):
+    search = StringField('搜索')
+    submit = SubmitField('提交')
+
+class DeleteComentForm(FlaskForm):
+    select = BooleanField()
+    submit = SubmitField('删除所选项目')

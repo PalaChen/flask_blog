@@ -1,9 +1,13 @@
+# encoding:utf-8
+
 from flask import request, render_template, redirect, url_for, flash, current_app
 from flask_login import login_required, current_user
 from app import db
-from app.models import Post, User, Comment, BlogInfo, Tags, Category, Role
+from app.models import Post, User, Comment, BlogInfo, Tag, Category, Role, Permission
+from app.decorators import admin_required
 from . import manage
-from .forms import NewPostForm, TagForm, NewCategoryForm, NewMemberForm, SearchForm
+from .forms import NewPostForm, TagForm, NewCategoryForm, NewMemberForm, SearchForm, DeleteComentForm, SearchComentFrom
+
 
 @manage.route('/admin')
 @login_required
@@ -12,7 +16,7 @@ def admin():
     posts = Post.query.count()
     categorys = Category.query.count()
     comemnts = Comment.query.count()
-    tags = Tags.query.count()
+    tags = Tag.query.count()
     blog_views = BlogInfo.query.filter_by(id='1').first()
     return render_template('manage/admin.html', users=users, posts=posts, comemnts=comemnts,
                     categorys=categorys, tags=tags, blog_views=blog_views)
@@ -32,7 +36,10 @@ def new_post():
     if form.validate_on_submit():
         title = form.title.data
         content = form.content.data
-        intro = form.intro.data
+        if not form.intro.data:
+            intro = content[0:300]
+        else:
+            intro = form.intro.data
         alias = form.alias.data
         author_id = form.author.data
         category_id = form.category.data
@@ -62,6 +69,8 @@ def new_post():
 @login_required
 def edit_post(id):
     form = NewPostForm()
+    post = Post.query.get_or_404(id)
+
     form.category.choices = [(c.id, c.name) for c in Category.query.all()]
 
     type = [(0, '公开'), (1, '草稿'), (2, '审核')]
@@ -72,7 +81,10 @@ def edit_post(id):
     if form.validate_on_submit():
         title = form.title.data
         content = form.content.data
-        intro = form.intro.data
+        if not form.intro.data:
+            intro = content[0:300]
+        else:
+            intro = form.intro.data
         alias = form.alias.data
         author_id = form.author.data
         category_id = form.category.data
@@ -86,14 +98,27 @@ def edit_post(id):
         author = User.query.get(author_id)
 
         if category and author:
-            post = Post(title=title, content=content, intro=intro, alias=alias,
-                        categoryID=category_id, authorID=author_id, type=type_id)
+
+            post.title = title
+            post.content = content
+            post.intro = intro
+            post.alias = alias
+            post.categoryID = category_id
+            post.authorID = author_id
+            post.type = type_id
+
             db.session.add(post)
             db.session.commit()
             flash('文章修改成功')
             return redirect(url_for('manage.article_manage'))
         else:
             flash('非法数据')
+    form.title.data = post.title
+    form.content.data = post.content
+    form.alias.data = post.alias
+    form.tag.data = post.tagID
+    form.intro.data = post.intro
+
     return render_template('manage/new_post.html', form=form)
 
 # 删除文章
@@ -111,7 +136,7 @@ def delete_post(id):
 def tags():
     page = request.args.get('page', 1, type=int)
     if tags is not None:
-        pagination = Tags.query.order_by(Tags.order).paginate(
+        pagination = Tag.query.order_by(Tag.order).paginate(
             page, per_page=current_app.config['ADMIN_PER_PAGE'], error_out=False)
         posts = pagination.items
     return render_template('manage/tags.html', posts=posts, pagination=pagination)
@@ -122,7 +147,7 @@ def tags():
 def new_tag():
     form = TagForm()
     if form.validate_on_submit():
-        tag = Tags(name=form.name.data,
+        tag = Tag(name=form.name.data,
                    alias=form.alias.data,
                    intro=form.intro.data,)
         db.session.add(tag)
@@ -134,7 +159,7 @@ def new_tag():
 @manage.route('/admin/edit_tag?id=<int:id>', methods=['GET','POST'])
 @login_required
 def edit_tag(id):
-    tag = Tags.query.get_or_404(id)
+    tag = Tag.query.get_or_404(id)
     form = TagForm()
     if form.validate_on_submit():
         tag.name = form.name.data
@@ -152,13 +177,14 @@ def edit_tag(id):
 @manage.route('/admin/delete_tag?id=<int:id>', methods=['GET','POST'])
 @login_required
 def delete_tag(id):
-    tags = Tags.query.get_or_404(id)
+    tags = Tag.query.get_or_404(id)
     if tags:
         db.session.delete(tags)
+        Post.query.filter_by(tagID=id).all
         flash(u'删除标签成功')
         return redirect(url_for('manage.tags'))
 
-# 分类页
+# 分类管理
 @manage.route('/admin/category')
 @login_required
 def category():
@@ -242,18 +268,17 @@ def new_member():
     form.role.choices = [(r.id, r.name) for r in Role.query.all()]
 
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.name.data).first()
-        if user:
-            flash('存在同名用户，请修改用户名')
-            return redirect(url_for('manage.new_member'))
+        # user = User.query.filter_by(username=form.name.data).first()
+        # if user:
+        #     flash('存在同名用户，请修改用户名')
+        #     return redirect(url_for('manage.new_member'))
+        #
+        # user = User.query.filter_by(email=form.email.data).first()
+        # if user:
+        #     flash('存在相同邮箱，请修改邮箱')
+        #     return redirect(url_for('manage.new_member'))
 
-        user = User.query.filter_by(email=form.email.data).first()
-        if user:
-            flash('存在相同邮箱，请修改邮箱')
-            return redirect(url_for('manage.new_member'))
-
-        role_id = form.role.data
-        role = Role.query.get(role_id)
+        role = Role.query.get_or_404(form.role.data)
         if role:
             user = User(username=form.name.data,
                         password=form.password.data,
@@ -262,7 +287,7 @@ def new_member():
                         email=form.email.data,
                         homepage=form.homepage.data,
                         intro=form.intro.data,
-                        role_id=role_id)
+                        role_id=form.role.data)
             db.session.add(user)
             flash('新用户注册成功')
             return redirect(url_for('manage.member'))
@@ -273,6 +298,7 @@ def new_member():
 
 # 用户修改
 @manage.route('/admin/edit_user?id=<int:id>', methods=['GET','POST'])
+@login_required
 def edit_user(id):
     form = NewMemberForm()
     user = User.query.get_or_404(id)
@@ -280,17 +306,17 @@ def edit_user(id):
         form.role.choices = [(r.id, r.name) for r in Role.query.all()]
         if form.validate_on_submit():
 
-            if user.username != form.name.data:
-                user = User.query.filter_by(username=form.name.data).first()
-                if user:
-                    flash('存在同名用户，请修改用户名')
-                    return redirect(url_for('manage.new_member'))
-
-            if user.email != form.email.data:
-                user = User.query.filter_by(email=form.email.data).first()
-                if user:
-                    flash('存在相同邮箱，请修改邮箱')
-                    return redirect(url_for('manage.new_member'))
+            # if user.username != form.name.data:
+            #     user = User.query.filter_by(username=form.name.data).first()
+            #     if user:
+            #         flash('存在同名用户，请修改用户名')
+            #         return redirect(url_for('manage.new_member'))
+            #
+            # if user.email != form.email.data:
+            #     user = User.query.filter_by(email=form.email.data).first()
+            #     if user:
+            #         flash('存在相同邮箱，请修改邮箱')
+            #         return redirect(url_for('manage.new_member'))
 
             role_id = form.role.data
             role = Role.query.get(role_id)
@@ -349,3 +375,19 @@ def article_manage():
         page, per_page=current_app.config['ADMIN_PER_PAGE'], error_out=False)
     posts = pagination.items
     return render_template('manage/articles.html', posts=posts, pagination=pagination, form=form)
+
+@manage.route('/admin/comment', methods=['GET','POST'])
+@login_required
+def comment():
+    form = SearchComentFrom()
+    form1 = DeleteComentForm()
+    if form.validate_on_submit():
+        search = form.search.data
+        Comment.query.filter(search).all()
+
+    page = request.args.get('page', 1, type=int)
+    pagination = Comment.query.order_by(Comment.postTime).paginate(
+        page, per_page=current_app.config['ADMIN_PER_PAGE'], error_out=False)
+    posts = pagination.items
+    return render_template('manage/comment.html', posts=posts, pagination=pagination,
+                           form=form, form1=form1)
