@@ -33,9 +33,9 @@ def base():
     db.create_all()
     Role.insert_roles()
     from app.models import User
-    user = User(email='koio@163.com',
-                username='pala',
-                password='qweasd123',
+    user = User(email='qqqqq@163.com,
+                username='qqqq',
+                password='a111111',
                 confirmed=True)
     db.session.add(user)
     db.session.commit()
